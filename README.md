@@ -8,3 +8,13 @@ Peterson's Algorithm is implemented to provide mutual exclusion between two proc
 Each process sets its flag before trying to enter the critical section and gives the other process the turn. It then waits while the other process also wants to enter and has the current turn. This ensures that both processes cannot enter the critical section at the same time. After incrementing the shared counter, the process clears its flag and leaves the critical section.
 
 Each process performs 10 iterations, so the expected final value of the shared counter is 20. The program successfully produces a final counter value of 20, demonstrating that mutual exclusion is working correctly and no increments are lost.
+
+Q2.Producer–Consumer Problem
+
+The Producer–Consumer problem is implemented using a bounded circular buffer of size 5. A producer process generates items from 1 to 20, while a consumer process removes the items from the buffer. Since both processes access the same buffer, synchronization is required to prevent race conditions and incorrect buffer operations.
+
+Three semaphores are used for synchronization. EMPTY keeps track of the number of empty spaces in the buffer and is initially set to 5. FULL keeps track of the number of items available for consumption and is initially set to 0. MUTEX provides mutual exclusion so that only one process can modify the buffer and its indices at a time.
+
+Before inserting an item, the producer waits for an empty buffer slot and then obtains the mutex. After inserting the item, it releases the mutex and signals that a new item is available. Similarly, the consumer waits for an available item, obtains the mutex, removes the item, and then signals that a buffer slot has become free.
+
+The semaphore implementation uses the xv6 sleep_prepare(), sleep(), and wakeup() mechanisms. The producer successfully generates all 20 items and the consumer receives them in the correct order from 1 to 20. This shows that the bounded buffer is working correctly without losing, duplicating, or incorrectly ordering items.
