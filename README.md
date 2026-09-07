@@ -18,3 +18,9 @@ Three semaphores are used for synchronization. EMPTY keeps track of the number o
 Before inserting an item, the producer waits for an empty buffer slot and then obtains the mutex. After inserting the item, it releases the mutex and signals that a new item is available. Similarly, the consumer waits for an available item, obtains the mutex, removes the item, and then signals that a buffer slot has become free.
 
 The semaphore implementation uses the xv6 sleep_prepare(), sleep(), and wakeup() mechanisms. The producer successfully generates all 20 items and the consumer receives them in the correct order from 1 to 20. This shows that the bounded buffer is working correctly without losing, duplicating, or incorrectly ordering items.
+
+Q3.Readers–Writers Problem
+
+The Readers–Writers problem is implemented using shared memory and semaphores. The program creates three reader processes and two writer processes. The main objective is to allow multiple readers to access the shared data simultaneously while ensuring that a writer has exclusive access when modifying the data.
+
+A read_count variable is used to keep track of the number of readers currently accessing the shared data. R_MUTEX protects changes to read_count, while RESOURCE controls access to the actual shared data. The first reader acquires the resource and the last reader releases it. This allows multiple readers to read at the same time. Each of the two writers performs three increments. Therefore, the expected final value of shared_data is 6. The output also shows cases where more than one reader is active at the same time, demonstrating concurrent reader access. The program successfully reaches Final shared_data = 6, confirming that the synchronization works correctly.
